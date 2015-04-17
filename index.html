@@ -14,8 +14,14 @@
         font-weight: normal;
         margin: .5em 0;
       }
-      img {
+      .fw img {
         width: 100%;
+      }
+      .fr {
+        float: right;
+      }
+      .fl {
+        float: left;
       }
       .remark-code, .remark-inline-code {
         background: #eee;
@@ -24,9 +30,24 @@
         border: 1px solid #ccc;
         border-radius: 2px;
       }
+      .m20 {
+        margin: 20px;
+      }
+      .sm {
+        font-size: 80%;
+      }
+      .block {
+        display: block;
+      }
       .note {
         font-style: italic;
         font-size: 80%;
+      }
+      img[alt='att'] {
+        width: 205px;
+      }
+      img[alt='headless'] {
+        margin: 0 175px;
       }
     </style>
   </head>
@@ -41,9 +62,10 @@ class: center, middle
 ---
 
 # Demystification
+.fr[![jackie](img/jackie.png)]
 ### Monster's lair: `.git` directory
 
-![gitdir](img/gitdir.jpg)
+.fw[![gitdir](img/gitdir.jpg)]
 
 Objects - files in which git stores things. Could be blobs, trees, commits or tags. [More info](http://www.gitguys.com/topics/all-git-object-types-blob-tree-commit-and-tag/)
 ???
@@ -59,10 +81,34 @@ ref: refs/heads/master
 .git (GIT_DIR!) $ cat refs/heads/master
 2627a6be868294a31a840f1a7a16a48529a569f9
 ```
+
+---
+![headless](img/headless.gif)
+
+```bash
+$ git checkout HEAD~2
+Note: checking out 'HEAD~2'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b new_branch_name
+
+HEAD is now at f0c93da... remotes & branches
+$ cat .git/HEAD
+f0c93dacd15fea671381b0521f9441b2e0c43342
+```
+???
+Demo headless state
 ---
 ### Remotes
 - Could be any directory ending in `.git` and containing a git repo connected to internet
 - Can have as many as you like
+.fr[![frown](img/suspicious.png)]
 
 ### Branches
 - Local - what you created locally, don't have a remote counterpart
@@ -84,6 +130,17 @@ $ git branch -rv
   origin/wwf                      2620135 Added referral stuff in anticipation o..
   origin/zip_code_bug_fixes       311727e Small bug fixes to inActiveArea and fr..
 ```
+
+???
+- Remotes, implicit/explicit branch pushing, branch tracking
+---
+class: center, middle
+
+### There! No longer a black box. We can see what's happening!
+
+![](img/eyes.gif)
+
+### Onwards to syncing repos!
 ---
 
 ### Updating remote (push) or local (pull) repo
@@ -104,26 +161,140 @@ Total 3 (delta 2), reused 0 (delta 0)
 To git@github.com:istro/gittalk
    c2f3cac..f60e3fa  master -> gh-pages
 ```
-#### Implicit - push/pull local tracking branch to/from it's remote counterpart
-Just `git push` or `git pull`
+#### Implicit - push/pull local tracking branches to/from it's remote counterparts
 
-### Configuring for automatic tracking
-
+.fl[![pr](img/puker.png)]
+.m20[Easy - just `git push` or `git pull`]
 
 ???
-- Remotes, implicit/explicit branch pushing, branch tracking
 - Local and remote branches, shortcuts & config to make them act as you want
-- CLI config - branch name in prompt,
+
+---
+.fr[![att](img/att.jpg)]
+### Configuring defaults
+
+.block[Local config: `git config section.key value` will write into `.git/config` file.]
+.block[Global config: use flag `--global` - will write into `~/.gitconfig` file.]
+
+### Do these to start:
+.sm[
+```bash
+git config --global push.default current
+git config --global branch.autosetuprebase always
+git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr by %an)%Creset' --abbrev-commit --date=relative"
+```]
+
+.note.block[1st - only push single branch when using `git push`]
+.note.block[2nd - default to `--rebase` when doing `git pull`]
+.note.block[3rd - gives you pretty and readable log when you run `git lg`, like this:]
+
+![glog](img/glog.jpg)
+
+???
+defaults.
+Talk about alias.
 ---
 
-# Happy Workflow
-- Viewing your changes
-- Making a commit - index (stage), message (and its template), abort
+### Additional useful notes:
+
+#### Use `-t` flag to set up tracking when checking out a remote branch
+.fr[![](img/foreveralonehappy.png)]
+
+`git checkout -t origin/feature`
+
+
+#### Add git branch & dirty/clean state to your prompt
+
+Add this to your `~/.bashrc`
+.note[copied from [here](https://gist.github.com/henrik/31631)]
+
+```bash
+# http://henrik.nyh.se/2008/12/git-dirty-prompt
+# http://www.simplisticcomplexity.com/2008/03/13/show-your-git-branch-name-in-your-prompt/
+#   username@Machine ~/dev/dir[master]$   # clean working directory
+#   username@Machine ~/dev/dir[master*]$  # dirty working directory
+
+ function parse_git_dirty {
+     [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]] && echo "*"
+ }
+ function parse_git_branch {
+     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1$(parse_git_dirty)]/"
+ }
+ export PS1='\u@\h \[\033[1;33m\]\w\[\033[0m\]$(parse_git_branch)$ '
+ ```
+???
+- checkout branches with tracking
+- CLI config - branch name in prompt, state in prompt
+---
+class: center, middle
+
+### Time to get to work!
+![](img/work.gif)
+---
+
+## Happy Workflow
+#### Got some work done. Check status with `git status`
+```bash
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  deleted:    img/monster.gif
+  modified:   index.html
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+  img/bunny.gif
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+#### Staging your changes (adding them to `.git/index`)
+.block[`git add .` - adds all tracked files (including deletions)]
+.block[`git add -A` - adds all files, including untracked & deleted files]
+.block[`git add -p` - adds changes one bit at a time]
+
+???
+- mention git diff to view changes
+- show add -p
+
+---
+class: sm
+
+#### Making a commit what does `git commit` do and what can YOU do with it
+
+1. `$ git commit`
+2. Script in `.git/hooks/pre-commit` is run, if there is one
+3. If you have a commit message template set with `git config commit.template path_to_template` - it is opened with editor defined with `git config core.editor editor_command_line_name` (or default text editor with default message)
+4. YOU enter the commit message. Anything starting with # is ignored.
+5. Script in `.git/hooks/commit-msg` is run if defined (could be used to validate commit message format). If it exits with non-zero, commit is aborted. By default, **commit is aborted if commit message is empty**.
+6. Script in `.git/hooks/post-commit` is run if defined (could be used for notifications)
+7. New commit object is created and added to `.git/objects`, current branch reference in `.git/refs/heads` is updated with new commit SHA.
+8. `.git/logs/refs/heads/branch_name` log gets a new entry.
+
+![](img/log.jpg)
+
+#### Amending a commit: `git commit --amend`
+
+steps 1-7 are the same.
+
+Last step - `.git/logs/refs/heads/branch_name` log last line gets a new entry with `(amend)` before commit message.
+.block[Git log shows only the **NEW COMMIT SHA** & message in place of old one:]
+
+![](img/log2.jpg)
+
+???
+- Commit hooks
 - Amending a commit
-- Getting your work up to date with others' work (merge vs rebase)
+- History changes, so force pushing necessary
 
 ---
 
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
 # Unhappy workflow
 - Resolving conflicts (it may be tedious but not hard)
 - Finding buggy commits - git bisect
@@ -148,13 +319,13 @@ Just `git push` or `git pull`
 
 [git magic](http://www-cs-students.stanford.edu/~blynn/gitmagic/index.html) - seems like a great comprehensive guide (I haven't read it all though).
 
-[git-scm.com](http://git-scm.com/) - Docs. E  nough said.
+[git-scm.com](http://git-scm.com/) - Docs. 'Nuff said.
 
 ---
 
 ## P.S.
 
-Remark is really cool for to make presentations with [markdown](http://daringfireball.net/projects/markdown/). Thanks!
+Remark is really cool for to make presentations with [markdown](http://daringfireball.net/projects/markdown/). Thanks [Ole Petter Bang aka gnab](https://github.com/gnab)!
 
 [Here's their project page.](https://github.com/gnab/remark)
 
