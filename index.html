@@ -468,7 +468,7 @@ $ git -i rebase HEAD~5
 Change the command words in front of commits as you like, per instructions. Save and quit text editor. Observe awesomeness.
 
 ---
-# More fun stuff
+# More fun stuff in happy workflow
 
 ### Cherry-picking
 During merge and rebase git applies one commit at a time. YOU can do that, too, at whim - with
@@ -484,21 +484,80 @@ If you know you want a file to look like it is in `that_other_commit` or on `tha
 .fr[![](img/yuno.png)]
 # Unhappy workflow
 ### Merge conflicts.
-When
+Easy way out - aborting what you were doing:
+.block[`git rebase --abort` (for rebases)]
+.block[`git reset --hard branch_name` (for merges)]
 
+Reasons:
+1. One commit modified the file, another deleted it.
+2. Both commits modified the file
 
+.block[First case is easy to figure out - take the file or not.]
+The latter keeps both changes - and formats them as such:
+
+```javascript
+<<<<<<< HEAD
+var git = ‘is awesome’;
+=======
+function awesomeAlerter() {
+    alert(‘blah’);
+}
+>>>>>>> Added alert
+```
+---
+
+## Example:
+
+`git status` sheds some light
+![](img/mc1.jpg)
+
+---
+## Resolving actual conflicts
+
+### Option 1
+Use a GUI tool. opendiff is a good one for Mac - set it as default by adding this to your ~/.gitconfig:
+```bash
+[merge]
+  tool = opendiff
+[mergetool "opendiff"]
+  cmd = opendiff $LOCAL $REMOTE -ancestor $BASE -merge $MERGED
+```
+
+### Option 2
+Look at `both modified` files, search for "<<<<<<", pick either HEAD option (state which the file is in BEFORE applying your commit) or bottom option (your commit's version) - **or a combination of both**. Example:
+
+.fr[![](img/freddie.png)]
+![](img/mc2.jpg)
 
 ???
 - Resolving conflicts (it may be tedious but not hard)
-- Finding buggy commits - git bisect
-- Rewriting history - interactive rebase
-- Dealing with rejection (git push rejection, that is)
 
 ---
 
-# Moar
+
+# More cool stuff for unhappy workflow
+
+### Finding when the X was removed
+
+`git log -p` (or `--patch`) shows log with actual commit content. Searchable.
+
+### Finding a commit that introduced a bug with `git-bisect`
+Straight from the [docs](http://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good):
+```bash
+$ git bisect start
+$ git bisect bad                 # Current version is bad
+$ git bisect good v2.6.13-rc2    # v2.6.13-rc2 was the last version
+                                 # tested that was good
+```
+Then git checks out the commit in the middle between "bad" and "good" ones, you test it - and tell it either
+`git bisect good` or `git bisect bad`. Keeps narrowing it down until you find the exact commit that broke stuff.
+
+### `git reflog`
+
+GIT BROTHER IS WATCHING YOUR EVERY STEP. Super handy for getting back to where branch *used to be* before you screwed it up with a rebase or a merge.
+
+---
 - git blame
-- git reflog - "You are being watched"
 - gitting help - navigating included documentation
 - gitting help++ - offline documentation browsers for git & more
 
