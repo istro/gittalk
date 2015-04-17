@@ -233,7 +233,7 @@ class: center, middle
 ---
 
 ## Happy Workflow
-#### Got some work done. Check status with `git status`
+Got some work done. Check status with `git status`
 ```bash
 $ git status
 On branch master
@@ -252,7 +252,8 @@ Untracked files:
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
 #### Staging your changes (adding them to `.git/index`)
-.block[`git add .` - adds all tracked files (including deletions)]
+.block[`git add .` - adds all tracked files and deletions - but not including new files]
+.block[`git add -u` - adds all tracked files and new files - but not including deletions]
 .block[`git add -A` - adds all files, including untracked & deleted files]
 .block[`git add -p` - adds changes one bit at a time]
 
@@ -558,8 +559,12 @@ GIT BROTHER IS WATCHING YOUR EVERY STEP. Super handy for getting back to where b
 
 ---
 - git blame
-- gitting help - navigating included documentation
-- gitting help++ - offline documentation browsers for git & more
+
+- gitting help - offline documentation browsers for git & more
+
+- windows - [Zeal](http://zealdocs.org/)
+- Mac - [Dash](https://kapeli.com/dash)
+
 
 ---
 
@@ -567,7 +572,7 @@ GIT BROTHER IS WATCHING YOUR EVERY STEP. Super handy for getting back to where b
 
 [git ready](http://gitready.com/) - bite-size tips with examples.
 
-[git guys](http://www.gitguys.com/) - great site with comprehensive explanations. Used it a lot for this slideshow.
+[git guys](http://www.gitguys.com/) - great site with comprehensive explanations.
 
 [git magic](http://www-cs-students.stanford.edu/~blynn/gitmagic/index.html) - seems like a great comprehensive guide (I haven't read it all though).
 
