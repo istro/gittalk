@@ -12,11 +12,22 @@
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
+        margin: .5em 0;
       }
       img {
         width: 100%;
       }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code, .remark-inline-code {
+        background: #eee;
+        font-family: 'Ubuntu Mono';
+        padding: 2px 7px;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+      }
+      .note {
+        font-style: italic;
+        font-size: 80%;
+      }
     </style>
   </head>
   <body>
@@ -38,9 +49,6 @@ Objects - files in which git stores things. Could be blobs, trees, commits or ta
 ???
 
 - quick look at `.git` directory & its contents
-- Remotes, implicit/explicit branch pushing, branch tracking
-- Local and remote branches, shortcuts & config to make them act as you want
-- CLI config - branch name in prompt,
 
 ---
 ### where's your head at???
@@ -51,6 +59,61 @@ ref: refs/heads/master
 .git (GIT_DIR!) $ cat refs/heads/master
 2627a6be868294a31a840f1a7a16a48529a569f9
 ```
+---
+### Remotes
+- Could be any directory ending in `.git` and containing a git repo connected to internet
+- Can have as many as you like
+
+### Branches
+- Local - what you created locally, don't have a remote counterpart
+- Local tracking - local branches that have a remote counterpart
+- Remote-tracking (read-only) - all branches that exist on remote server
+
+View local branches with `git branch -vv` (doubly verbose)
+```bash
+$ git branch -vv
+  SITE-5393           f4f921c SITE: update favicons
+  ST-12               287b323 [origin/ST-12: ahead 1, behind 10] initial cricket..
+  lend                1250666 [istro/lend] Add some analytics tracking with Kont..
+* master              2efaf40 [origin/master: ahead 95, behind 141] Merge pull r..
+  marmot_redesign     f5c0845 [origin/marmot_redesign: ahead 77, behind 86] Bugs..
+```
+View remote branches with `git branch -rv` (remote verbose)
+```bash
+$ git branch -rv
+  origin/wwf                      2620135 Added referral stuff in anticipation o..
+  origin/zip_code_bug_fixes       311727e Small bug fixes to inActiveArea and fr..
+```
+---
+
+### Updating remote (push) or local (pull) repo
+#### Explicit - push/pull any local branch to/from any remote branch
+```bash
+$ git push remote_name local_branch_name:remote_branch_name
+```
+.note[Note: if `remote_branch_name` is omitted, git assumes it's the same as `local_branch_name`]
+
+Example:
+```bash
+$ git push origin master:gh-pages
+Counting objects: 3, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 1.14 KiB | 0 bytes/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+To git@github.com:istro/gittalk
+   c2f3cac..f60e3fa  master -> gh-pages
+```
+#### Implicit - push/pull local tracking branch to/from it's remote counterpart
+Just `git push` or `git pull`
+
+### Configuring for automatic tracking
+
+
+???
+- Remotes, implicit/explicit branch pushing, branch tracking
+- Local and remote branches, shortcuts & config to make them act as you want
+- CLI config - branch name in prompt,
 ---
 
 # Happy Workflow
