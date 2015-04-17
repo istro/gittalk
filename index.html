@@ -370,6 +370,7 @@ States of the original tree are still accessible after merge by the commit ids.
 ### `git merge`
 
 Once it's done, it creates an empty "merge" commit - and updates `ref/heads/f1` to point to it.
+.fr[![](img/woah.png)]
 ![](img/t6.jpg)
 
 ???
@@ -427,6 +428,7 @@ Still the same original tree.
 
 Until it gets to the last one, at which point it updaits `.git/refs/f1` to point to that commit.
 
+.fr[![](img/yay.png)]
 ![](img/t10.jpg)
 
 
@@ -435,16 +437,58 @@ COMMIT IDS CHANGED! pushing the repo will necessitate -f
 ---
 ## Rewriting your own history - interactive rebase
 
-If you need to change your commit history (e.g. meld a "work in progress" commit into final one, or remove something that wasn't meant to be included) - you can use the same rebase functionality with `--interactive` (or `-i`) flag.
-
-Example:
 ```bash
-$ git rebase HEAD~5
+$ git -i rebase HEAD~5
+ >>> vim opens with this:
+  1 pick c2f3cac add readme
+  2 pick f0c93da remotes & branches
+  3 pick 9d4d4f0 add a few pages
+  4 pick a9c22df Add a few more pages.
+  5 pick 76446d6 rebase added
+  6
+  7 # Rebase b10eea8..76446d6 onto b10eea8 (       5 TODO item(s))
+  8 #
+  9 # Commands:
+ 10 # p, pick = use commit
+ 11 # r, reword = use commit, but edit the commit message
+ 12 # e, edit = use commit, but stop for amending
+ 13 # s, squash = use commit, but meld into previous commit
+ 14 # f, fixup = like "squash", but discard this commit's log message
+ 15 # x, exec = run command (the rest of the line) using shell
+ 16 #
+ 17 # These lines can be re-ordered; they are executed from top to bottom.
+ 18 #
+ 19 # If you remove a line here THAT COMMIT WILL BE LOST.
+ 20 #
+ 21 # However, if you remove everything, the rebase will be aborted.
+ 22 #
+ 23 # Note that empty commits are commented out
 ```
 
+Change the command words in front of commits as you like, per instructions. Save and quit text editor. Observe awesomeness.
 
 ---
+# More fun stuff
+
+### Cherry-picking
+During merge and rebase git applies one commit at a time. YOU can do that, too, at whim - with
+
+`git cherry-pick commit_sha`
+
+### Checking out individual files
+If you know you want a file to look like it is in `that_other_commit` or on `that_other_branch`, you can get it by
+
+`git checkout that_other_branch path/to/file`
+
+---
+.fr[![](img/yuno.png)]
 # Unhappy workflow
+### Merge conflicts.
+When
+
+
+
+???
 - Resolving conflicts (it may be tedious but not hard)
 - Finding buggy commits - git bisect
 - Rewriting history - interactive rebase
