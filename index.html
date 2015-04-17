@@ -274,6 +274,7 @@ class: sm
 7. New commit object is created and added to `.git/objects`, current branch reference in `.git/refs/heads` is updated with new commit SHA.
 8. `.git/logs/refs/heads/branch_name` log gets a new entry.
 
+.fr[![](img/satisfied.png)]
 ![](img/log.jpg)
 
 #### Amending a commit: `git commit --amend`
@@ -283,6 +284,7 @@ steps 1-7 are the same.
 Last step - `.git/logs/refs/heads/branch_name` log last line gets a new entry with `(amend)` before commit message.
 .block[Git log shows only the **NEW COMMIT SHA** & message in place of old one:]
 
+.fr[![](img/hardcore.png)]
 ![](img/log2.jpg)
 
 ???
@@ -291,9 +293,156 @@ Last step - `.git/logs/refs/heads/branch_name` log last line gets a new entry wi
 - History changes, so force pushing necessary
 
 ---
+## Collaboration: merge & rebase
+
+#### `git merge point_in_history`
+...will check out first common ancestor between current `HEAD` (where you're at) and given `point_in_history` (most often a branch name - but could be a commit or a tag) and apply all commits on both branches in chronological order, stopping for any conflicts.
+
+#### `git rebase point_in_history`
+...will check out `point_in_history` and apply all commits on YOUR branch since common ancestor, stopping for any conflicts. THIS REWRITES HISTORY, so you will need to force push your branch if you pushed before.
+
+#### `git rebase --interactive point_in_history`
+...will check out `point_in_history` and open list of commits since that point in your text editor of choice. Then you have the power to specify what you would like it to do with each commit. THIS ALSO REWRITES HISTORY.
+
+---
+## Collaboration: merge & rebase
+
+Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
+
+![t1](img/t1.jpg)
+
+### `git merge`
+
+running `git merge f2` will move `HEAD` to common ancestor
+![](img/t2.jpg)
 
 ???
 - Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: merge & rebase
+
+Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
+
+![t1](img/t1.jpg)
+
+### `git merge`
+
+Then apply commits in chronological order:
+![](img/t3.jpg)
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: merge & rebase
+
+Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
+
+![t1](img/t1.jpg)
+
+### `git merge`
+
+Then apply commits in chronological order:
+![](img/t4.jpg)
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: merge & rebase
+
+Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
+
+![t1](img/t1.jpg)
+
+### `git merge`
+
+Then apply commits in chronological order:
+![](img/t5.jpg)
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: merge & rebase
+
+States of the original tree are still accessible after merge by the commit ids.
+
+![t1](img/t1.jpg)
+
+### `git merge`
+
+Once it's done, it creates an empty "merge" commit - and updates `ref/heads/f1` to point to it.
+![](img/t6.jpg)
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: merge & rebase
+
+Still same tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
+
+![t1](img/t1.jpg)
+
+### `git rebase` - rewriting history
+
+running `git rebase f2` will move HEAD to tip of `f2` -
+![](img/t7.jpg)
+
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: merge & rebase
+
+Still the same original tree.
+![t1](img/t1.jpg)
+
+### `git rebase` - rewriting history
+
+And then it will try to apply content of each commit of f2, making a new commit for every one (because parent changes, so while content stays the same the SHA changes):
+![](img/t8.jpg)
+
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: merge & rebase
+
+Still the same original tree.
+![t1](img/t1.jpg)
+
+### `git rebase` - rewriting history
+
+And then it will try to apply content of each commit of f2, making a new commit for every one (because parent changes, so while content stays the same the SHA changes):
+![](img/t9.jpg)
+
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: merge & rebase
+
+Still the same original tree.
+![t1](img/t1.jpg)
+
+### `git rebase` - rewriting history
+
+Until it gets to the last one, at which point it updaits `.git/refs/f1` to point to that commit.
+
+![](img/t10.jpg)
+
+
+???
+COMMIT IDS CHANGED! pushing the repo will necessitate -f
+---
+## Rewriting your own history - interactive rebase
+
+If you need to change your commit history (e.g. meld a "work in progress" commit into final one, or remove something that wasn't meant to be included) - you can use the same rebase functionality with `--interactive` (or `-i`) flag.
+
+Example:
+```bash
+$ git rebase HEAD~5
+```
+
+
 ---
 # Unhappy workflow
 - Resolving conflicts (it may be tedious but not hard)
