@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      img {
+        width: 100%;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Git. What weird monster is it?
+![](img/weird.gif)
+### brief overview of git.
+---
+
+# Demystification
+### Monster's lair: `.git` directory
+
+![gitdir](img/gitdir.jpg)
+
+Objects - files in which git stores things. Could be blobs, trees, commits or tags. [More info](http://www.gitguys.com/topics/all-git-object-types-blob-tree-commit-and-tag/)
+???
+
+- quick look at `.git` directory & its contents
+- Remotes, implicit/explicit branch pushing, branch tracking
+- Local and remote branches, shortcuts & config to make them act as you want
+- CLI config - branch name in prompt,
+
+---
+### where's your head at???
+<iframe width="740" height="416" src="https://www.youtube.com/embed/5rAOyh7YmEc?start=111" frameborder="0" allowfullscreen></iframe>
+```bash
+.git (GIT_DIR!) $ cat HEAD
+ref: refs/heads/master
+.git (GIT_DIR!) $ cat refs/heads/master
+2627a6be868294a31a840f1a7a16a48529a569f9
+```
+---
+
+# Happy Workflow
+- Viewing your changes
+- Making a commit - index (stage), message (and its template), abort
+- Amending a commit
+- Getting your work up to date with others' work (merge vs rebase)
+
+---
+
+# Unhappy workflow
+- Resolving conflicts (it may be tedious but not hard)
+- Finding buggy commits - git bisect
+- Rewriting history - interactive rebase
+- Dealing with rejection (git push rejection, that is)
+
+---
+
+# Moar
+- git blame
+- git reflog - "You are being watched"
+- gitting help - navigating included documentation
+- gitting help++ - offline documentation browsers for git & more
+
+---
+
+# Resources
+
+[git ready](http://gitready.com/) - bite-size tips with examples.
+
+[git guys](http://www.gitguys.com/) - great site with comprehensive explanations. Used it a lot for this slideshow.
+
+[git magic](http://www-cs-students.stanford.edu/~blynn/gitmagic/index.html) - seems like a great comprehensive guide (I haven't read it all though).
+
+[git-scm.com](http://git-scm.com/) - Docs. E  nough said.
+
+---
+
+## P.S.
+
+Remark is really cool for to make presentations with [markdown](http://daringfireball.net/projects/markdown/). Thanks!
+
+[Here's their project page.](https://github.com/gnab/remark)
+
+![thumbsup](img/thumbsup.gif)
+
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+        highlightStyle: 'monokai'
+      });
+    </script>
+  </body>
+</html>
