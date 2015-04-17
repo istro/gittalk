@@ -14,8 +14,14 @@
         font-weight: normal;
         margin: .5em 0;
       }
-      img {
+      .fw img {
         width: 100%;
+      }
+      .fr {
+        float: right;
+      }
+      .fl {
+        float: left;
       }
       .remark-code, .remark-inline-code {
         background: #eee;
@@ -24,9 +30,21 @@
         border: 1px solid #ccc;
         border-radius: 2px;
       }
+      .m20 {
+        margin: 20px;
+      }
+      .sm {
+        font-size: 80%;
+      }
+      .block {
+        display: block;
+      }
       .note {
         font-style: italic;
         font-size: 80%;
+      }
+      img[alt='att'] {
+        width: 205px;
       }
     </style>
   </head>
@@ -41,9 +59,10 @@ class: center, middle
 ---
 
 # Demystification
+.fr[![jackie](img/jackie.png)]
 ### Monster's lair: `.git` directory
 
-![gitdir](img/gitdir.jpg)
+.fw[![gitdir](img/gitdir.jpg)]
 
 Objects - files in which git stores things. Could be blobs, trees, commits or tags. [More info](http://www.gitguys.com/topics/all-git-object-types-blob-tree-commit-and-tag/)
 ???
@@ -63,6 +82,7 @@ ref: refs/heads/master
 ### Remotes
 - Could be any directory ending in `.git` and containing a git repo connected to internet
 - Can have as many as you like
+.fr[![frown](img/suspicious.png)]
 
 ### Branches
 - Local - what you created locally, don't have a remote counterpart
@@ -84,6 +104,9 @@ $ git branch -rv
   origin/wwf                      2620135 Added referral stuff in anticipation o..
   origin/zip_code_bug_fixes       311727e Small bug fixes to inActiveArea and fr..
 ```
+
+???
+- Remotes, implicit/explicit branch pushing, branch tracking
 ---
 
 ### Updating remote (push) or local (pull) repo
@@ -104,16 +127,46 @@ Total 3 (delta 2), reused 0 (delta 0)
 To git@github.com:istro/gittalk
    c2f3cac..f60e3fa  master -> gh-pages
 ```
-#### Implicit - push/pull local tracking branch to/from it's remote counterpart
-Just `git push` or `git pull`
+#### Implicit - push/pull local tracking branches to/from it's remote counterparts
 
-### Configuring for automatic tracking
-
+.fl[![pr](img/puker.png)]
+.m20[Easy - just `git push` or `git pull`]
 
 ???
-- Remotes, implicit/explicit branch pushing, branch tracking
 - Local and remote branches, shortcuts & config to make them act as you want
-- CLI config - branch name in prompt,
+
+---
+.fr[![att](img/att.jpg)]
+### Configuring defaults
+
+.block[Local config: `git config section.key value` will write into `.git/config` file.]
+.block[Global config: use flag `--global` - will write into `~/.gitconfig` file.]
+
+### Do these:
+.sm[
+```bash
+git config --global push.default current
+git config --global branch.autosetuprebase always
+git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr by %an)%Creset' --abbrev-commit --date=relative"
+```]
+
+.note.block[1st - only push single branch when using `git push`]
+.note.block[2nd - default to `--rebase` when doing `git pull`]
+.note.block[3rd - gives you pretty and readable log when you run `git lg`, like this:]
+
+![glog](img/glog.jpg)
+
+???
+defaults.
+Talk about alias.
+---
+
+#### To set up tracking when checking out a branch that already exists on remote: `-t`
+`git checkout -t origin/feature`
+
+???
+- checkout branches with tracking
+- CLI config - branch name in prompt, state in prompt
 ---
 
 # Happy Workflow
@@ -154,7 +207,7 @@ Just `git push` or `git pull`
 
 ## P.S.
 
-Remark is really cool for to make presentations with [markdown](http://daringfireball.net/projects/markdown/). Thanks!
+Remark is really cool for to make presentations with [markdown](http://daringfireball.net/projects/markdown/). Thanks [Ole Petter Bang aka gnab](https://github.com/gnab)!
 
 [Here's their project page.](https://github.com/gnab/remark)
 
