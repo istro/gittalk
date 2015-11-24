@@ -56,7 +56,7 @@
 
 class: center, middle
 
-# Git. What weird monster is it?
+## Git. What weird monster is it?
 ![](img/weird.gif)
 ### brief overview of git.
 ---
@@ -297,16 +297,16 @@ Last step - `.git/logs/refs/heads/branch_name` log last line gets a new entry wi
 ## Collaboration: merge & rebase
 
 #### `git merge point_in_history`
-...will check out first common ancestor between current `HEAD` (where you're at) and given `point_in_history` (most often a branch name - but could be a commit or a tag) and apply all commits on both branches in chronological order, stopping for any conflicts.
+...will append all commits to current branch first between common ancestor and `point_in_history` (most often a branch name - but could be a commit or a tag), then compare branches, stop for you to resolve any conflicts, and create a `merge commit`.
 
 #### `git rebase point_in_history`
-...will check out `point_in_history` and apply all commits on YOUR branch since common ancestor, stopping for any conflicts. THIS REWRITES HISTORY, so you will need to force push your branch if you pushed before.
+...will check out `point_in_history` and apply all commits on YOUR branch since common ancestor, stopping for any conflicts at every step. THIS REWRITES HISTORY - i.e. commit SHAs will change, so you will need to force push your branch if you pushed before.
 
 #### `git rebase --interactive point_in_history`
 ...will check out `point_in_history` and open list of commits since that point in your text editor of choice. Then you have the power to specify what you would like it to do with each commit. THIS ALSO REWRITES HISTORY.
 
 ---
-## Collaboration: merge & rebase
+## Collaboration: Merge
 
 Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
 
@@ -314,70 +314,27 @@ Consider such tree, with horizontal scale being chronological and branch f1 chec
 
 ### `git merge`
 
-running `git merge f2` will move `HEAD` to common ancestor
-![](img/t2.jpg)
+running `git merge f2` appends references to commits on branch `f2` to history of current branch (with same commit `SHA`s)
+![](TODO)
 
 ???
 - Getting your work up to date with others' work (merge vs rebase)
 ---
-## Collaboration: merge & rebase
+## Collaboration: Merge
 
-Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
+Then compares `f1` and `f2` to see if some files had same lines modified on both branches.
+If there aren't any common files - it will create an empty "merge" commit, and updates `ref/heads/f1` to point to it.
+![](TODO)
 
-![t1](img/t1.jpg)
+If there are common files, it will keep both edits - and stop, asking you to pick which version (or combination of) you want to keep. Once conflicts are resolved, staging the changes with `git add .` and continuing merge with `git merge --continue` will create the "merge" commit with resolution of conflicts, and updates `ref/heads/f1` to point to it.
 
-### `git merge`
-
-Then apply commits in chronological order:
-![](img/t3.jpg)
-
-???
-- Getting your work up to date with others' work (merge vs rebase)
----
-## Collaboration: merge & rebase
-
-Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
-
-![t1](img/t1.jpg)
-
-### `git merge`
-
-Then apply commits in chronological order:
-![](img/t4.jpg)
-
-???
-- Getting your work up to date with others' work (merge vs rebase)
----
-## Collaboration: merge & rebase
-
-Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
-
-![t1](img/t1.jpg)
-
-### `git merge`
-
-Then apply commits in chronological order:
-![](img/t5.jpg)
-
-???
-- Getting your work up to date with others' work (merge vs rebase)
----
-## Collaboration: merge & rebase
-
-States of the original tree are still accessible after merge by the commit ids.
-
-![t1](img/t1.jpg)
-
-### `git merge`
-
-Once it's done, it creates an empty "merge" commit - and updates `ref/heads/f1` to point to it.
 .fr[![](img/woah.png)]
-![](img/t6.jpg)
+![](TODO)
 
 ???
 - Getting your work up to date with others' work (merge vs rebase)
 ---
-## Collaboration: merge & rebase
+## Collaboration: Rebase
 
 Still same tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
 
@@ -392,7 +349,7 @@ running `git rebase f2` will move HEAD to tip of `f2` -
 ???
 - Getting your work up to date with others' work (merge vs rebase)
 ---
-## Collaboration: merge & rebase
+## Collaboration: Rebase
 
 Still the same original tree.
 ![t1](img/t1.jpg)
@@ -406,7 +363,7 @@ And then it will try to apply content of each commit of f2, making a new commit 
 ???
 - Getting your work up to date with others' work (merge vs rebase)
 ---
-## Collaboration: merge & rebase
+## Collaboration: Rebase
 
 Still the same original tree.
 ![t1](img/t1.jpg)
@@ -420,7 +377,7 @@ And then it will try to apply content of each commit of f2, making a new commit 
 ???
 - Getting your work up to date with others' work (merge vs rebase)
 ---
-## Collaboration: merge & rebase
+## Collaboration: Rebase
 
 Still the same original tree.
 ![t1](img/t1.jpg)
@@ -558,17 +515,12 @@ Then git checks out the commit in the middle between "bad" and "good" ones, you 
 GIT BROTHER IS WATCHING YOUR EVERY STEP. Super handy for getting back to where branch *used to be* before you screwed it up with a rebase or a merge.
 
 ---
-- git blame
-
-- gitting help - offline documentation browsers for git & more
+### gitting help - offline documentation browsers for git & more
 
 - windows - [Zeal](http://zealdocs.org/)
 - Mac - [Dash](https://kapeli.com/dash)
 
-
----
-
-# Resources
+### Other Resources
 
 [git ready](http://gitready.com/) - bite-size tips with examples.
 
