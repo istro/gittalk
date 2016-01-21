@@ -49,13 +49,6 @@
       img[alt='headless'] {
         margin: 0 175px;
       }
-      .hljs-monokai .hljs {
-        background-color: #f4f4f4;
-        color: #272822;
-      }
-      .remark-code {
-        font-size: 14px;
-      }
     </style>
   </head>
   <body>
@@ -63,7 +56,7 @@
 
 class: center, middle
 
-## Git. What weird monster is it?
+# Git. What weird monster is it?
 ![](img/weird.gif)
 ### brief overview of git.
 ---
@@ -271,8 +264,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ---
 class: sm
 
-## Making a commit
-#### what does `git commit` command do and what can YOU do with it:
+#### Making a commit what does `git commit` do and what can YOU do with it
 
 1. `$ git commit`
 2. Script in `.git/hooks/pre-commit` is run, if there is one
@@ -332,40 +324,91 @@ to follow with regular `rebase` process.
 
 #### Note: `rebase` REWRITES HISTORY - i.e. commit SHAs will change, so you will need to force push your branch if you pushed before.
 
-
 ---
-class: sm
-
 ## Collaboration: Merge
 
 Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
 
 ![t1](img/t1.jpg)
 
-#### `git merge`
+### `git merge`
 
-running `git merge f2` finds the first common ancestor, `a9c22df` and sets `HEAD` there.
+running `git merge f2` will move `HEAD` to common ancestor
 ![](img/t2.jpg)
-
 
 ???
 - Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: Merge
 
+Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
+
+![t1](img/t1.jpg)
+
+### `git merge`
+
+Then apply commits in chronological order:
+![](img/t3.jpg)
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: Merge
+
+Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
+
+![t1](img/t1.jpg)
+
+### `git merge`
+
+Then apply commits in chronological order:
+![](img/t4.jpg)
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: Merge
+
+Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
+
+![t1](img/t1.jpg)
+
+### `git merge`
+
+Then apply commits in chronological order:
+![](img/t5.jpg)
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
+---
+## Collaboration: Merge
+
+States of the original tree are still accessible after merge by the commit ids.
+
+![t1](img/t1.jpg)
+
+### `git merge`
+
+Then it will stop to check for conflicts -
+![](img/tree-merge.jpg)
+
+???
+- Getting your work up to date with others' work (merge vs rebase)
 ---
 class: sm
 
 ## Collaboration: Merge
 
-Then it lump together the commits in chronological order:
+States of the original tree are still accessible after merge by the commit ids.
 
-![](img/tree-merge.jpg)
+![t1](img/t1.jpg)
+
+### `git merge`
 
 Then compares `f1` and `f2` to see if some files had same lines modified on both branches. Once conflicts (if any) are resolved and added with `git add`, you can resume merge with `git merge --continue`.
 That will create a "merge" commit, and updates `ref/heads/f1` to point to it.
 ![](img/t6.jpg)
 
-???
-- Getting your work up to date with others' work (merge vs rebase)
 ---
 ## Collaboration: Rebase
 
@@ -425,19 +468,12 @@ Until it gets to the last one, at which point it updaits `.git/refs/f1` to point
 
 ???
 COMMIT IDS CHANGED! pushing the repo will necessitate -f
-
 ---
-class: sm
-
 ## Rewriting your own history - interactive rebase
 
 ```bash
 $ git -i rebase HEAD~5
-
-```
-text editor opens with this:
-
-```bash
+ >>> vim opens with this:
   1 pick c2f3cac add readme
   2 pick f0c93da remotes & branches
   3 pick 9d4d4f0 add a few pages
@@ -531,7 +567,7 @@ Look at `both modified` files, search for "<<<<<<", pick either HEAD option (sta
 - Resolving conflicts (it may be tedious but not hard)
 
 ---
-class: sm
+
 
 # More cool stuff for unhappy workflow
 
@@ -550,17 +586,22 @@ $ git bisect good v2.6.13-rc2    # v2.6.13-rc2 was the last version
 Then git checks out the commit in the middle between "bad" and "good" ones, you test it - and tell it either
 `git bisect good` or `git bisect bad`. Keeps narrowing it down until you find the exact commit that broke stuff.
 
-### git reflog
+### `git reflog`
 
 GIT BROTHER IS WATCHING YOUR EVERY STEP. Super handy for getting back to where branch *used to be* before you screwed it up with a rebase or a merge.
 
 ---
-### gitting help - offline documentation browsers for git & more
+- git blame
+
+- gitting help - offline documentation browsers for git & more
 
 - windows - [Zeal](http://zealdocs.org/)
 - Mac - [Dash](https://kapeli.com/dash)
 
-### Other Resources
+
+---
+
+# Resources
 
 [git ready](http://gitready.com/) - bite-size tips with examples.
 
