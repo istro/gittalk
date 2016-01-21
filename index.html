@@ -49,6 +49,16 @@
       img[alt='headless'] {
         margin: 0 175px;
       }
+      .hljs-monokai .hljs {
+        background-color: #f4f4f4;
+        color: #272822;
+      }
+      .remark-code {
+        font-size: 14px;
+      }
+      iframe {
+        margin: 0 auto;
+      }
     </style>
   </head>
   <body>
@@ -73,14 +83,16 @@ Objects - files in which git stores things. Could be blobs, trees, commits or ta
 - quick look at `.git` directory & its contents
 
 ---
-### where's your head at???
-<iframe width="740" height="416" src="https://www.youtube.com/embed/5rAOyh7YmEc?start=111" frameborder="0" allowfullscreen></iframe>
+### where's your `HEAD` at???
+<iframe class='center' width="694" height="390" src="https://www.youtube.com/embed/5rAOyh7YmEc?start=111" frameborder="0" allowfullscreen></iframe>
 ```bash
 .git (GIT_DIR!) $ cat HEAD
 ref: refs/heads/master
 .git (GIT_DIR!) $ cat refs/heads/master
 2627a6be868294a31a840f1a7a16a48529a569f9
 ```
+
+##### Note: in git version 2.x, `.git/refs/heads` only contain recent refs. All refs are listed in `.git/info/refs` file.
 
 ---
 ![headless](img/headless.gif)
@@ -252,10 +264,13 @@ Untracked files:
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
 #### Staging your changes (adding them to `.git/index`)
+
 .block[`git add .` - adds all tracked files and deletions - but not including new files]
 .block[`git add -u` - adds all tracked files and new files - but not including deletions]
 .block[`git add -A` - adds all files, including untracked & deleted files]
 .block[`git add -p` - adds changes one bit at a time]
+
+##### Note: in git version 2.x - `git add .` is identical to `git add -A`.
 
 ???
 - mention git diff to view changes
@@ -469,11 +484,17 @@ Until it gets to the last one, at which point it updaits `.git/refs/f1` to point
 ???
 COMMIT IDS CHANGED! pushing the repo will necessitate -f
 ---
+class: sm
+
 ## Rewriting your own history - interactive rebase
 
 ```bash
 $ git -i rebase HEAD~5
- >>> vim opens with this:
+
+```
+text editor opens with this:
+
+```bash
   1 pick c2f3cac add readme
   2 pick f0c93da remotes & branches
   3 pick 9d4d4f0 add a few pages
