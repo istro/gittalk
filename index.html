@@ -49,6 +49,13 @@
       img[alt='headless'] {
         margin: 0 175px;
       }
+      .hljs-monokai .hljs {
+        background-color: #f4f4f4;
+        color: #272822;
+      }
+      .remark-code {
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
@@ -264,7 +271,8 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ---
 class: sm
 
-#### Making a commit what does `git commit` do and what can YOU do with it
+## Making a commit
+#### what does `git commit` command do and what can YOU do with it:
 
 1. `$ git commit`
 2. Script in `.git/hooks/pre-commit` is run, if there is one
@@ -294,42 +302,67 @@ Last step - `.git/logs/refs/heads/branch_name` log last line gets a new entry wi
 - History changes, so force pushing necessary
 
 ---
+class: sm
+
 ## Collaboration: merge & rebase
 
-#### `git merge point_in_history`
-...will append all commits to current branch first between common ancestor and `point_in_history` (most often a branch name - but could be a commit or a tag), then compare branches, stop for you to resolve any conflicts, and create a `merge commit`.
+#### `git merge point_in_history` will
+- look for first common ancestor of your current state & `point_in_history`
+- string together all the commits in chronological order (hence "merge")
+- look for common changed files since common ancestor between your current state & point in history, if same lines were touched - keep both changes and mark them as "conflicts"
+- stop for you to resolve conflicts (choose which version of change you want to keep)
+- wait for you to tell it `git merge --continue` when you're done fixing conflicts
+& added all the files
+- create a `merge commit` that contains your conflict resolutions & metadata
 
-#### `git rebase point_in_history`
-...will check out `point_in_history` and apply all commits on YOUR branch since common ancestor, stopping for any conflicts at every step. THIS REWRITES HISTORY - i.e. commit SHAs will change, so you will need to force push your branch if you pushed before.
+#### `git rebase point_in_history` will
+- check out `point_in_history`
+- apply one commits on YOUR branch that follows common ancestor
+- stop for any conflicts at every step (much like merge).
+- wait for you to tell it `git rebase --continue` when you're done fixing conflicts
+- apply next commit. Repeat until all commits on your branch have been added.
 
-#### `git rebase --interactive point_in_history`
-...will check out `point_in_history` and open list of commits since that point in your text editor of choice. Then you have the power to specify what you would like it to do with each commit. THIS ALSO REWRITES HISTORY.
+#### `git rebase --interactive point_in_history` will
+- check out `point_in_history`
+- open the text editor of choice with list of commits since first common ancestor.
+
+Then you have the power to specify what you would like it to do with each commit
+(instructions are provided), and saving and closing the text editor sets git free
+to follow with regular `rebase` process.
+
+#### Note: `rebase` REWRITES HISTORY - i.e. commit SHAs will change, so you will need to force push your branch if you pushed before.
+
 
 ---
+class: sm
+
 ## Collaboration: Merge
 
 Consider such tree, with horizontal scale being chronological and branch f1 checked out (thus HEAD points there):
 
 ![t1](img/t1.jpg)
 
-### `git merge`
+#### `git merge`
 
-running `git merge f2` appends references to commits on branch `f2` to history of current branch (with same commit `SHA`s)
-![](TODO)
+running `git merge f2` finds the first common ancestor, `a9c22df` and sets `HEAD` there.
+![](img/t2.jpg)
+
 
 ???
 - Getting your work up to date with others' work (merge vs rebase)
+
 ---
+class: sm
+
 ## Collaboration: Merge
 
-Then compares `f1` and `f2` to see if some files had same lines modified on both branches.
-If there aren't any common files - it will create an empty "merge" commit, and updates `ref/heads/f1` to point to it.
-![](TODO)
+Then it lump together the commits in chronological order:
 
-If there are common files, it will keep both edits - and stop, asking you to pick which version (or combination of) you want to keep. Once conflicts are resolved, staging the changes with `git add .` and continuing merge with `git merge --continue` will create the "merge" commit with resolution of conflicts, and updates `ref/heads/f1` to point to it.
+![](img/tree-merge.jpg)
 
-.fr[![](img/woah.png)]
-![](TODO)
+Then compares `f1` and `f2` to see if some files had same lines modified on both branches. Once conflicts (if any) are resolved and added with `git add`, you can resume merge with `git merge --continue`.
+That will create a "merge" commit, and updates `ref/heads/f1` to point to it.
+![](img/t6.jpg)
 
 ???
 - Getting your work up to date with others' work (merge vs rebase)
@@ -392,12 +425,19 @@ Until it gets to the last one, at which point it updaits `.git/refs/f1` to point
 
 ???
 COMMIT IDS CHANGED! pushing the repo will necessitate -f
+
 ---
+class: sm
+
 ## Rewriting your own history - interactive rebase
 
 ```bash
 $ git -i rebase HEAD~5
- >>> vim opens with this:
+
+```
+text editor opens with this:
+
+```bash
   1 pick c2f3cac add readme
   2 pick f0c93da remotes & branches
   3 pick 9d4d4f0 add a few pages
@@ -491,7 +531,7 @@ Look at `both modified` files, search for "<<<<<<", pick either HEAD option (sta
 - Resolving conflicts (it may be tedious but not hard)
 
 ---
-
+class: sm
 
 # More cool stuff for unhappy workflow
 
@@ -510,7 +550,7 @@ $ git bisect good v2.6.13-rc2    # v2.6.13-rc2 was the last version
 Then git checks out the commit in the middle between "bad" and "good" ones, you test it - and tell it either
 `git bisect good` or `git bisect bad`. Keeps narrowing it down until you find the exact commit that broke stuff.
 
-### `git reflog`
+### git reflog
 
 GIT BROTHER IS WATCHING YOUR EVERY STEP. Super handy for getting back to where branch *used to be* before you screwed it up with a rebase or a merge.
 
