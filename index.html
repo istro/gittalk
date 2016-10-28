@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>Git talk</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -49,6 +49,18 @@
       img[alt='headless'] {
         margin: 0 175px;
       }
+      img[alt='glog'] {
+        width: 100%;
+      }
+      img[alt='log'] {
+        height: 150px;
+      }
+      img[alt='log2'] {
+        height: 170px;
+      }
+      img[alt='conflict'] {
+        width: 800px;
+      }
       .hljs-monokai .hljs {
         background-color: #f4f4f4;
         color: #272822;
@@ -75,7 +87,7 @@ class: center, middle
 .fr[![jackie](img/jackie.png)]
 ### Monster's lair: `.git` directory
 
-.fw[![gitdir](img/gitdir.jpg)]
+.fw[![gitdir](img/gitdir.png)]
 
 Objects - files in which git stores things. Could be blobs, trees, commits or tags. [More info](http://www.gitguys.com/topics/all-git-object-types-blob-tree-commit-and-tag/)
 ???
@@ -85,6 +97,7 @@ Objects - files in which git stores things. Could be blobs, trees, commits or ta
 ---
 ### where's your `HEAD` at???
 <iframe class='center' width="694" height="390" src="https://www.youtube.com/embed/5rAOyh7YmEc?start=111" frameborder="0" allowfullscreen></iframe>
+---
 ```bash
 .git (GIT_DIR!) $ cat HEAD
 ref: refs/heads/master
@@ -94,7 +107,6 @@ ref: refs/heads/master
 
 ##### Note: in git version 2.x, `.git/refs/heads` only contain recent refs. All refs are listed in `.git/info/refs` file.
 
----
 ![headless](img/headless.gif)
 
 ```bash
@@ -200,7 +212,7 @@ git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(ye
 .note.block[2nd - default to `--rebase` when doing `git pull`]
 .note.block[3rd - gives you pretty and readable log when you run `git lg`, like this:]
 
-![glog](img/glog.jpg)
+![glog](img/glog.png)
 
 ???
 defaults.
@@ -291,7 +303,7 @@ class: sm
 8. `.git/logs/refs/heads/branch_name` log gets a new entry.
 
 .fr[![](img/satisfied.png)]
-![](img/log.jpg)
+![log](img/log.png)
 
 #### Amending a commit: `git commit --amend`
 
@@ -301,7 +313,7 @@ Last step - `.git/logs/refs/heads/branch_name` log last line gets a new entry wi
 .block[Git log shows only the **NEW COMMIT SHA** & message in place of old one:]
 
 .fr[![](img/hardcore.png)]
-![](img/log2.jpg)
+![log2](img/log2.png)
 
 ???
 - Commit hooks
@@ -309,35 +321,10 @@ Last step - `.git/logs/refs/heads/branch_name` log last line gets a new entry wi
 - History changes, so force pushing necessary
 
 ---
-class: sm
+class: center, middle
 
-## Collaboration: merge & rebase
-
-#### `git merge point_in_history` will
-- look for first common ancestor of your current state & `point_in_history`
-- string together all the commits in chronological order (hence "merge")
-- look for common changed files since common ancestor between your current state & point in history, if same lines were touched - keep both changes and mark them as "conflicts"
-- stop for you to resolve conflicts (choose which version of change you want to keep)
-- wait for you to tell it `git merge --continue` when you're done fixing conflicts
-& added all the files
-- create a `merge commit` that contains your conflict resolutions & metadata
-
-#### `git rebase point_in_history` will
-- check out `point_in_history`
-- apply one commits on YOUR branch that follows common ancestor
-- stop for any conflicts at every step (much like merge).
-- wait for you to tell it `git rebase --continue` when you're done fixing conflicts
-- apply next commit. Repeat until all commits on your branch have been added.
-
-#### `git rebase --interactive point_in_history` will
-- check out `point_in_history`
-- open the text editor of choice with list of commits since first common ancestor.
-
-Then you have the power to specify what you would like it to do with each commit
-(instructions are provided), and saving and closing the text editor sets git free
-to follow with regular `rebase` process.
-
-#### Note: `rebase` REWRITES HISTORY - i.e. commit SHAs will change, so you will need to force push your branch if you pushed before.
+# Collaboration: merge & rebase 
+![](img/happy-merge.gif)
 
 ---
 ## Collaboration: Merge
@@ -475,7 +462,7 @@ Still the same original tree.
 
 ### `git rebase` - rewriting history
 
-Until it gets to the last one, at which point it updaits `.git/refs/f1` to point to that commit.
+Until it gets to the last one, at which point it updates `.git/refs/f1` to point to that commit.
 
 .fr[![](img/yay.png)]
 ![](img/t10.jpg)
@@ -523,6 +510,37 @@ text editor opens with this:
 Change the command words in front of commits as you like, per instructions. Save and quit text editor. Observe awesomeness.
 
 ---
+class: sm
+
+## Merge & rebase recap:
+
+#### `git merge point_in_history` will
+- look for first common ancestor of your current state & `point_in_history`
+- string together all the commits in chronological order (hence "merge")
+- look for common changed files since common ancestor between your current state & point in history, if same lines were touched - keep both changes and mark them as "conflicts"
+- stop for you to resolve conflicts (choose which version of change you want to keep)
+- wait for you to tell it `git merge --continue` when you're done fixing conflicts
+& added all the files
+- create a `merge commit` that contains your conflict resolutions & metadata
+
+#### `git rebase point_in_history` will
+- check out `point_in_history`
+- apply one commits on YOUR branch that follows common ancestor
+- stop for any conflicts at every step (much like merge).
+- wait for you to tell it `git rebase --continue` when you're done fixing conflicts
+- apply next commit. Repeat until all commits on your branch have been added.
+
+#### `git rebase --interactive point_in_history` will
+- check out `point_in_history`
+- open the text editor of choice with list of commits since first common ancestor.
+
+Then you have the power to specify what you would like it to do with each commit
+(instructions are provided), and saving and closing the text editor sets git free
+to follow with regular `rebase` process.
+
+#### Note: `rebase` REWRITES HISTORY - i.e. commit SHAs will change, so you will need to force push your branch if you pushed before.
+
+---
 # More fun stuff in happy workflow
 
 ### Cherry-picking
@@ -536,14 +554,40 @@ If you know you want a file to look like it is in `that_other_commit` or on `tha
 `git checkout that_other_branch path/to/file`
 
 ---
-.fr[![](img/yuno.png)]
+class: center, middle
+
 # Unhappy workflow
-### Merge conflicts.
-Easy way out - aborting what you were doing:
+![](img/nascar.gif)
+
+---
+class: center, middle
+
+## Merge conflicts.
+![conflict](img/merge_fail.gif)
+
+---
+class: sm
+
+## Example:
+
+.fr[![](img/rage.png)]
+
+`git rebase master` (or `merge`) does not complete - there are uncommitted files!
+
+`git status` sheds some light:
+
+![](img/mc1.png)
+
+---
+.fr[![](img/yuno.png)]
+### Backup:
+Before doing something potentially scary, do a `git checkout -b my_backup_branch` for peace of mind.
+
+### Way out - aborting what you were doing:
 .block[`git rebase --abort` (for rebases)]
 .block[`git reset --hard branch_name` (for merges)]
 
-Reasons:
+#### Reasons:
 1. One commit modified the file, another deleted it.
 2. Both commits modified the file
 
@@ -560,13 +604,6 @@ function awesomeAlerter() {
 >>>>>>> Added alert
 ```
 ---
-
-## Example:
-
-`git status` sheds some light
-![](img/mc1.jpg)
-
----
 ## Resolving actual conflicts
 
 ### Option 1
@@ -582,13 +619,13 @@ Use a GUI tool. opendiff is a good one for Mac - set it as default by adding thi
 Look at `both modified` files, search for "<<<<<<", pick either HEAD option (state which the file is in BEFORE applying your commit) or bottom option (your commit's version) - **or a combination of both**. Example:
 
 .fr[![](img/freddie.png)]
-![](img/mc2.jpg)
+![](img/mc2.png)
 
 ???
 - Resolving conflicts (it may be tedious but not hard)
 
 ---
-
+class: sm
 
 # More cool stuff for unhappy workflow
 
