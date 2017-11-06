@@ -78,8 +78,9 @@
 
 class: center, middle
 
-# Git. What weird monster is it?
-![](img/weird.gif)
+# Git demystified
+## Inner workings, merge vs rebase, escape routes.
+![](img/gears.gif)
 ### brief overview of git.
 ---
 
@@ -195,7 +196,7 @@ To git@github.com:istro/gittalk
 
 ---
 
-# Dealing with rejections 
+# Dealing with rejections
 
 First thing to do - find out how remote is different from your local branch:
 
@@ -211,7 +212,7 @@ If logs confirm you actually want what's locally on the remote (e.g. you rewrote
 
 `git push --force-with-lease`
 
-### *Use with care! This blows away your old commits on remote!* 
+### *Use with care! This blows away your old commits on remote!*
 
 **Note: an even stronger version is `git push --force`, that one will overwrite anyone's commits on remote.**
 
@@ -346,7 +347,7 @@ Last step - `.git/logs/refs/heads/branch_name` log last line gets a new entry wi
 ---
 class: center, middle
 
-# Collaboration: merge & rebase 
+# Collaboration: merge & rebase
 ![](img/happy-merge.gif)
 
 ---
@@ -538,7 +539,7 @@ class: sm
 .fr[![](img/tomato.png)]
 ## Merge vs Rebase: pros & cons
 
-### Pros: 
+### Pros:
 
 Merge:
 - simpler to wrap your head around
@@ -547,7 +548,7 @@ Merge:
 
 Rebase:
 - neater git history (relevant commits near each other)
-- dealing with conflicts potentially more straight-forward (addressing only your code) 
+- dealing with conflicts potentially more straight-forward (addressing only your code)
 - no extra merge commits
 - making a commit is less of a commitment, inspires making tons of tiny ones
 
